@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block cabecalho %}
+<script type="text/javascript" src="media/js/jquery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#post_form').submit(function(event){
+            event.preventDefault(); 
+            var form = this;
+            var data = {};
+            data.post_data = $(form).find('input[name=longurl]').val();
+            $.post("/post_link/", 
+                data, 
+                function(responseData) {
+		$("#Tabela").append('<tr>' +
+                        '<td>' + responseData.key + '</td>' +
+			'<td>' + responseData.longUrl +	'</td>' +
+			'<td>' + responseData.date + '</td>' +
+			'</tr>' ) 
+		},
+                "json"
+            );
+        });
+    });
+  </script>
+{% endblock %}
+{% block corpo %}
+    <form id="post_form" method="post"> 
+      URL: <input type="text" name="longurl" />
+      <input type="submit" value="Make url" />
+    </form>
+    <table id="Tabela">
+        <thead>
+            <tr>
+                <th>
+                    Key
+                </th>
+                <th>
+                    LongUrl
+                </th>
+                <th>
+                    Data
+                </th>                
+            </tr>
+        </thead>
+        <tbody id="Tabela">
+        </tbody>
+    </table>
+{% endblock %}

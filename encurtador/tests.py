@@ -1,23 +1,26 @@
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
+import random
 
-Replace these with more appropriate tests for your application.
-"""
-
+from datetime import datetime
 from django.test import TestCase
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
+from encurtador.models import Link, Logger
 
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
+class LinkTest(TestCase):
+    def testFields(self):
+        link = Link()
+       
+        link.key = random.choice('abcdefghijlmnopqrstuvxz')
+        link.longUrl = 'http://www.sodavirtual.com.br'
+        #link.date = datetime.today()
+	link.save()
+ 
+        self.assertTrue(link.id)
 
->>> 1 + 1 == 2
-True
-"""}
+        logger = Logger()
+	
+	logger.link = link
+	#logger.date = datetime.today()
 
+	logger.save()
+
+	self.assertTrue(logger.id)
